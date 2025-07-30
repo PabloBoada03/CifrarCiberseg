@@ -1,7 +1,18 @@
 # Se ingresa el mensaje
-entrada = input("Ingrese el texto a cifrar: ")
+entrada = input("Ingrese el texto a cifrar (solo letras y espacios): ")
+
+# Validación: solo letras y espacios
+if not all(c.isalpha() or c == ' ' for c in entrada):
+    print("❌ Error: El mensaje solo puede contener letras y espacios.")
+    exit()
+
 # Se ingresa la clave (solo letras)
-clave = input("Ingrese la clave: ")
+clave = input("Ingrese la clave (solo letras): ")
+
+# Validación: solo letras
+if not clave.isalpha():
+    print("❌ Error: La clave solo puede contener letras (sin espacios, números ni símbolos).")
+    exit()
 
 # Se convierte la clave a minúsculas para trabajar en un mismo rango ASCII
 clave = clave.lower()
@@ -24,27 +35,14 @@ for i in range(len(entrada)):
         # Se obtiene el desplazamiento desde la clave
         k = ord(clave_repetida[i]) - 97  # 'a' = 0, 'b' = 1, ..., 'z' = 25
 
-        # Si es una letra mayúscula
-        if 65 <= ord(entrada[i]) <= 90:
-            #1. Restamos 65 para que 'A' sea 0
-            #2. Sumamos el desplazamiento 'k'
-            #3. Usamos %26 para mantenernos dentro del alfabeto
-            #4. Sumamos 65 para regresar al rango ASCII original
+        if entrada[i].isupper():
             nueva_letra = ((ord(entrada[i]) - 65 + k) % 26) + 65
-        # Si es una letra minúscula
-        elif 97 <= ord(entrada[i]) <= 122:
-            #1. Restamos 97 para que 'a' sea 0
-            #2. Sumamos el desplazamiento 'k'
-            #3. Usamos %26 para mantenernos dentro del alfabeto
-            #4. Sumamos 97 para regresar al rango ASCII original
-            nueva_letra = ((ord(entrada[i]) - 97 + k) % 26) + 97
         else:
-            nueva_letra = ord(entrada[i])  # No se cifran signos, números, etc.
+            nueva_letra = ((ord(entrada[i]) - 97 + k) % 26) + 97
 
-        # Se agrega el carácter cifrado a la lista
         cifrado.append(chr(nueva_letra))
     else:
         cifrado.append(' ')  # Se conserva el espacio
 
-# Se imprime el arreglo como una frase, sin comas
+# Se imprime el resultado como una frase sin comas
 print("Texto cifrado: " + ''.join(cifrado))
